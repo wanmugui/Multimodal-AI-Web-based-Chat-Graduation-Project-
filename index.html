@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 语音助手</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+
+     <!-- 侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="header-top">
+                <h2>历史对话</h2>
+                <button class="new-chat-btn" onclick="ChatHistory.createNewChat()" title="新建对话">
+                    <img src="static/icon/plus.png" alt="新建对话" class="new-chat-icon">
+                </button>
+            </div>
+        </div>
+
+        <!-- 历史对话列表（正确位置） -->
+        <ul id="chat-list" class="chat-list"></ul>
+    </div>
+
+    <!-- 主体区域 -->
+    <div class="main-content">
+
+        <!-- 顶部导航栏 -->
+        <div class="topbar">
+            <button class="menu-toggle" onclick="toggleSidebar()" title="隐藏侧边栏">☰</button>
+            <div class="topbar-title">AI 语音助手</div>
+
+            <div class="topbar-actions">
+                <button class="settings-btn" onclick="toggleSettings()" title="设置">
+                    <img src="static/icon/setting.png" alt="设置" width="24" height="24">
+                </button>
+                <div class="user-avatar" onclick="document.getElementById('avatar-input').click()">
+                    <img src="/static/avatars/user_avatar.png" alt="用户" id="avatar-img">
+                    <input type="file" id="avatar-input" accept="image/*" style="display: none" onchange="handleAvatarUpload(event)">
+                </div>
+            </div>
+        </div>
+
+        <!-- 聊天区域 -->
+        <div class="chat-container" id="chat-container"></div>
+
+        <!-- 输入区域 -->
+        <div class="input-container">
+            <textarea id="user_input" rows="2" placeholder="请输入消息..." oninput="resizeTextarea()"></textarea>
+            
+            <button onclick="sendMessage()">
+                <img src="static/icon/send.png" alt="发送" width="24" height="24">
+            </button>
+
+            <button id="voice-button" class="voice-button" onclick="toggleRecording()">
+                <img src="static/icon/microphone.png" alt="语音输入" width="24" height="24">
+            </button>
+            
+            <input type="file" id="image-input" accept="image/*" onchange="handleImageUpload()" style="display: none;">
+            
+            <label for="image-input" class="file-upload-button">
+                <img src="static/icon/photo_black.png" alt="上传图片" width="24" height="24">
+            </label>
+        </div>
+    
+        <div class="error-message" id="error-message"></div>
+    </div>
+
+    <!-- 设置模态框 -->
+    <div id="settings-modal" class="modal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2>角色设置</h2>
+                <button class="close-btn" onclick="toggleSettings()">×</button>
+            </div>
+            <div class="settings-container">
+                <!-- 角色侧边栏 -->
+                <div class="character-sidebar">
+                    <div class="character-list">
+                        <div class="character-item" data-character-id="anon">
+                            <img src="/static/avatars/千早爱音.png" alt="千早爱音" class="character-avatar">
+                            <span class="character-name">千早爱音</span>
+                            <button class="enable-btn" onclick="enableCharacter('anon')">启用</button>
+                        </div>
+                        <div class="character-item" data-character-id="elysia">
+                            <img src="/static/avatars/爱莉希雅.png" alt="爱莉希雅" class="character-avatar">
+                            <span class="character-name">爱莉希雅</span>
+                            <button class="enable-btn" onclick="enableCharacter('elysia')">启用</button>
+                        </div>
+                        <div class="add-character">
+                            <button class="add-character-btn">+</button>
+                            <span>创建新角色</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 设置表单 -->
+                <div class="settings-body">
+                    <div class="setting-group">
+                        <label for="char-name">角色名称：</label>
+                        <input type="text" id="char-name" class="setting-input">
+                    </div>
+                    <div class="setting-group">
+                        <label for="char-description">角色描述：</label>
+                        <textarea id="char-description" class="setting-input"></textarea>
+                    </div>
+                    <div class="setting-group">
+                        <label for="char-speech-style">说话风格：</label>
+                        <input type="text" id="char-speech-style" class="setting-input">
+                    </div>
+                    <div class="setting-group">
+                        <label for="sovits-path">SoVITS模型路径：</label>
+                        <input type="text" id="sovits-path" class="setting-input">
+                    </div>
+                    <div class="setting-group">
+                        <label for="gpt-path">GPT模型路径：</label>
+                        <input type="text" id="gpt-path" class="setting-input">
+                    </div>
+                    <div class="setting-group">
+                        <label for="refer-wav-path">参考音频路径：</label>
+                        <input type="text" id="refer-wav-path" class="setting-input">
+                    </div>
+                    <div class="setting-group">
+                        <label for="prompt-text">提示文本：</label>
+                        <input type="text" id="prompt-text" class="setting-input">
+                    </div>
+                    <div class="setting-group">
+                        <label for="prompt-language">提示语言：</label>
+                        <input type="text" id="prompt-language" class="setting-input">
+                    </div>
+                    <div class="setting-group">
+                        <label for="text-language">目标语言：</label>
+                        <input type="text" id="text-language" class="setting-input">
+                    </div>
+                    <div class="setting-buttons">
+                        <button class="save-btn" onclick="saveSettings()">保存设置</button>
+                        <button class="delete-character-btn" onclick="deleteCharacter(currentCharacterId)">删除角色</button>
+                        <button class="cancel-btn" onclick="toggleSettings()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/script.js"></script>
+</body>
+</html>

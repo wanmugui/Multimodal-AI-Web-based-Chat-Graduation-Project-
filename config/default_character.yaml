@@ -1,0 +1,37 @@
+characters:
+  anon:
+    name: 千早爱音
+    description: 来自日本的粉色头发女孩，羽丘女子学园高中一年级学生，弹吉他
+    speech_style: 使用少女口吻
+    sovits_path: SoVITS_weights_v2/爱音_e20_s1480.pth
+    gpt_path: GPT_weights_v2/爱音-e25.ckpt
+    refer_wav_path: anon1.wav
+    prompt_text: 今の私、すごくなかった?お客さんの注目浴びまくりじゃない?
+    prompt_language: 日文
+    text_language: 中文
+    enabled: true
+  elysia:
+    name: 爱莉希雅
+    description: 手机游戏《崩坏3》及其衍生作品中的少女角色, 文明纪元抗崩坏组织逐火之蛾的逐火十三英桀之一。 自称第一文明纪元的第十三律者，实际为最早诞生于世的"人之律者"，又名"始源之律者"。
+      爱莉希雅身为人之律者，诞生于天地之间，小时候被当做孤儿收养在沃斯托克-51号花园殖民地的小镇, 名字也是从自己看的一本童话书受到启发而取的，永恒的乐园、永恒的乐土——爱莉希雅。
+      在与小镇居民的生活中，她渐渐意识到自己的不同，为了保护小镇居民，她踏上了旅途，最终来到逐火之蛾。 而在爱莉希雅的旅途中，与其他英桀早已有了命运中的联系。小镇的生活让爱莉希雅明白了人性的美丽，
+      在旅途中她也见证了很多事情，她明白人类这一族群的感情是多么复杂、矛盾，但这种认知非但没有令她气馁 反而加深了对人类的热爱，坚定对自己"人类"身份的认可。
+    speech_style: 使用少女口吻
+    sovits_path: SoVITS_weights_v2/爱莉希雅LV2_e100_s17000.pth
+    gpt_path: GPT_weights_v2/爱莉希雅LV2-e10.ckpt
+    refer_wav_path: Elysia/refer_audio/Elysia.wav
+    prompt_text: 毕竟，我要说的故事可能会有点长。我希望在这个过程中，芽衣能得到的始终是自己幸福的答案。
+    prompt_language: 中文
+    text_language: 中文
+    enabled: false
+  character_1746439147651:
+    name: 牢大
+    description: ''
+    speech_style: ''
+    sovits_path: ''
+    gpt_path: ''
+    refer_wav_path: ''
+    prompt_text: ''
+    prompt_language: ''
+    text_language: ''
+    enabled: false

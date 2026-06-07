@@ -1,0 +1,985 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px;
+    flex-grow: 1;
+    width: 100%;
+    background-color: #fff;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    overflow-y: auto; /* 使聊天区域可滚动 */
+    padding-bottom: 80px; /* 预留空间，避免被输入框遮挡 */
+}
+
+
+.chat-bubble {
+    max-width: 70%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 15px;
+    background-color: #e0e0e0;
+    align-self: flex-start;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    position: relative;
+    margin-top: 40px; /* 为头像留出空间 */
+}
+
+.chat-bubble.user {
+    background-color: #A3D5FF;
+    align-self: flex-end;
+    margin-right: 5px;
+}
+
+.chat-bubble .avatar {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    top: -55px; /* 将头像放在气泡上方 */
+}
+
+.chat-bubble.user .avatar {
+    right: -15px; /* 用户头像靠右 */
+}
+
+.chat-bubble:not(.user) .avatar {
+    left: 0; /* AI头像靠左 */
+}
+
+.chat-bubble .message-content {
+    flex: 1;
+}
+
+
+
+/* 控制输入框与按钮的位置 */
+.input-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    max-width: 600px;
+    padding: 15px;
+    background: white;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    transition: all 0.3s ease;
+}
+
+/* 输入框样式 */
+#user_input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    background-color: #fff;
+    height: 40px;
+    max-height: 120px;
+    border: none; /* 去掉外边框 */
+}
+
+
+
+/* 按钮样式 */
+.input-container button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.input-container button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+
+button {
+    width: 40px; /* 确保是正方形 */
+    height: 40px; /* 确保是正方形 */
+    padding: 0; /* 避免 padding 影响形状 */
+    border-radius: 50%; /* 让它变成圆形 */
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
+}
+
+/* 按钮悬停效果 */
+button:hover,
+.file-upload-button:hover {
+    background-color: #b9aeae;
+}
+
+
+.voice-button {
+    
+    /* top: 50%; /* 将按钮垂直居中 */
+    /* transform: translateY(-50%); 精确居中按钮 */ 
+    background-color: #ffffff;
+    /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
+}
+
+.file-upload-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.file-upload-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.recording {
+    background-color: #e2d7d3;
+}
+
+audio {
+    margin-top: 10px;
+    width: 100%;
+}
+
+
+
+
+#chat-container img {
+    max-width: 50%;
+    max-height: 400px;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    padding: 5px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+/* _____________________________________________ */
+/* 顶部导航栏样式 */
+.topbar {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    z-index: 1000;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.topbar-title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.topbar-actions button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #ffffff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.topbar-actions select {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.user-avatar {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+}
+
+.user-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f0f0f0;
+    transition: border-color 0.2s ease;
+}
+
+.user-avatar:hover img {
+    border-color: #e0e0e0;
+}
+
+/* 调整聊天容器避免被顶部遮挡 */
+.chat-container {
+    margin-top: 60px;
+    padding: 10px;
+}
+
+
+
+
+/* _______________________________________________________ */
+
+/* ===== 侧边栏样式 ===== */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.chat-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.chat-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    position: relative;
+}
+
+.chat-item:hover {
+    background-color: #e8e8e8;
+}
+
+.chat-item.active {
+    background-color: #d1e6ff;
+}
+
+.chat-preview {
+    flex: 1;
+    overflow: hidden;
+}
+
+.chat-preview div:first-child {
+    font-weight: 500;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-preview small {
+    color: #666;
+    font-size: 12px;
+}
+
+.delete-btn {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: #0b3bbe;
+}
+
+.chat-item:hover .delete-btn {
+    opacity: 1;
+    background-color: rgba(94, 94, 150, 0.05);
+}
+
+.chat-title-edit {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
+.chat-title-edit:focus {
+    border-bottom: 2px solid #007bff;
+}
+
+/* 当侧边栏被隐藏时 */
+.sidebar.collapsed {
+    transform: translateX(-280px);
+}
+
+.sidebar.collapsed + .main-content {
+    margin-left: 0;
+    width: 100%;
+}
+
+.sidebar.collapsed + .main-content .input-container {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 聊天容器样式 */
+.chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    padding-bottom: 100px; /* 为输入框留出空间 */
+    width: 100%; /* 确保宽度占满 */
+    box-sizing: border-box; /* 包含padding在内的宽度计算 */
+}
+
+/* 侧边栏头部样式 */
+.sidebar-header {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f5f5f5;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.new-chat-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.new-chat-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.new-chat-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* 主内容区域布局 */
+.main-content {
+    position: relative;
+    margin-left: 280px; /* 默认留出侧边栏宽度 */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease;
+    background-color: #fff;
+    overflow: hidden;
+    width: calc(100% - 280px); /* 确保宽度正确 */
+    box-sizing: border-box; /* 包含margin在内的宽度计算 */
+}
+
+/* 顶部导航栏样式 */
+.topbar {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    z-index: 1000;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.settings-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.settings-btn img {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.settings-btn:hover img {
+    opacity: 1;
+}
+
+/* ---------------------------------------------------设置界面样式 ---------------------------------------------------*/
+.settings-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.settings-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0 5px;
+}
+
+.settings-body {
+    padding: 20px;
+}
+
+.setting-item {
+    margin-bottom: 20px;
+}
+
+.setting-item label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.setting-item input,
+.setting-item textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.setting-item textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.setting-buttons {
+    margin-top: 20px;
+}
+
+.save-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #10a37f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.save-btn:hover {
+    background-color: #0d8c6d;
+}
+
+.cancel-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.delete-character-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.delete-character-btn:hover {
+    background-color: #da190b;
+}
+
+/* 角色侧边栏样式 */
+.character-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 200px;
+    height: 100vh;
+    background-color: #f5f5f5;
+    border-right: 1px solid #ddd;
+    padding: 20px 0;
+    z-index: 1000;
+}
+
+.character-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.character-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 6px;
+    position: relative;
+}
+
+.character-item:hover {
+    background-color: #e0e0e0;
+}
+
+.character-item.active {
+    background-color: #d0d0d0;
+}
+
+/* 确保角色列表项不显示删除按钮 */
+.character-item .delete-btn {
+    display: none !important;
+}
+
+.character-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.character-name {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+}
+
+.enable-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.enable-btn:hover {
+    background-color: #45a049;
+}
+
+.enable-btn.disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.add-character {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.add-character:hover {
+    color: #333;
+}
+
+.add-character-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #666;
+    background: none;
+    color: #666;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.add-character-btn:hover {
+    border-color: #333;
+    color: #333;
+}
+
+/* 设置模态框样式更新 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+}
+
+.settings-content {
+    position: relative;
+    background-color: #fff;
+    margin: 50px auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 1000px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.settings-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* 角色侧边栏样式 */
+.character-sidebar {
+    width: 200px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 15px;
+    flex-shrink: 0;
+}
+
+.character-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.character-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 6px;
+}
+
+.character-item:hover {
+    background-color: #e0e0e0;
+}
+
+.character-item.active {
+    background-color: #d0d0d0;
+}
+
+.character-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.character-name {
+    font-size: 14px;
+    color: #333;
+}
+
+.add-character {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+    border-radius: 6px;
+}
+
+.add-character:hover {
+    color: #333;
+    background-color: #e0e0e0;
+}
+
+.add-character-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #666;
+    background: none;
+    color: #666;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.add-character-btn:hover {
+    border-color: #333;
+    color: #333;
+}
+
+/* 设置表单样式 */
+.settings-body {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.setting-group {
+    margin-bottom: 15px;
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: 500;
+}
+
+.setting-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.setting-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.setting-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-btn, .cancel-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.save-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #0056b3;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #545b62;
+}
+
+.character-content {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.character-buttons {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.character-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 6px;
+    position: relative;
+}
+
+.character-item:hover {
+    background-color: #e0e0e0;
+}
+
+.character-item.active {
+    background-color: #d0d0d0;
+}
+
+.character-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.character-name {
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+}
+
+.enable-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.enable-btn:hover {
+    background-color: #45a049;
+}
+
+.enable-btn.disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.delete-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f44336;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #da190b;
+}
+
+
+

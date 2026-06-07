@@ -1,0 +1,181 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+
+
+/* .chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px;
+    height: 80%;
+    overflow-y: scroll;
+    flex-grow: 1;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+} */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px;
+    flex-grow: 1;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 使聊天区域可滚动 */
+    position: relative;
+}
+
+
+.chat-bubble {
+    max-width: 70%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 15px;
+    background-color: #e0e0e0;
+    align-self: flex-start;
+    word-wrap: break-word;
+}
+
+.chat-bubble.user {
+    background-color: #A3D5FF;
+    align-self: flex-end;
+}
+
+
+
+
+
+/* 输入框样式 */
+/* #user_input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    background-color: #fff;
+    height: 40px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}  */
+/* 控制输入框与按钮的位置 */
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 25px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    bottom: 0; /* 固定在页面底部 */
+    left: 50%; /* 将输入框左边界定位到页面中间 */
+    transform: translateX(-50%); /* 将输入框向左偏移它自身的一半，达到完全居中的效果 */  
+    background-color: #f9f9f9;
+}
+
+
+/* 输入框样式 */
+#user_input {
+    position: relative; /* 使得 voice-button 可以在容器内悬浮 */
+    width: 100%; /* 让输入框占满整个父容器 */
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    background-color: #fff;
+    height: 40px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+
+button {
+    width: 40px; /* 确保是正方形 */
+    height: 40px; /* 确保是正方形 */
+    padding: 0; /* 避免 padding 影响形状 */
+    border-radius: 50%; /* 让它变成圆形 */
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+}
+
+/* 按钮悬停效果 */
+button:hover,
+.file-upload-button:hover {
+    background-color: #b9aeae;
+}
+
+
+.voice-button {
+    
+    /* top: 50%; /* 将按钮垂直居中 */
+    /* transform: translateY(-50%); 精确居中按钮 */ 
+    background-color: #f9f9f9;
+}
+
+.file-upload-button {
+    /* position: absolute;
+    top: 50%; /* 将按钮垂直居中 */
+    /* transform: translateY(-50%);  */
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.recording {
+    background-color: #e2d7d3;
+}
+
+audio {
+    margin-top: 10px;
+    width: 100%;
+}
+
+
+
+
+#chat-container img {
+    max-width: 50%;
+    max-height: 400px;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    padding: 5px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}

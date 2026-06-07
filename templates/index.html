@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优化输入框</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
+</head>
+<body>
+
+<div class="chat-input-container">
+    <!-- 左侧功能按钮 -->
+    <div class="icon-group">
+        <button class="icon-button" id="uploadImage"> <img src="icon/photo_black.png" alt="upload" width="24" height="24"></button>
+        <!-- <button class="icon-button"><i class="fas fa-globe"></i></button>
+        <button class="icon-button"><i class="fas fa-lightbulb"></i></button> -->
+    </div>
+    
+    <!-- 输入框 -->
+    <input type="text" id="userInput" placeholder="问问任何问题..." />
+
+    <!-- 右侧语音按钮 -->
+    <button id="voiceButton" class="voice-button"><img src="icon/microphone.png" alt="microphone" width="24" height="24"></i></button>
+
+    <!-- 隐藏的文件上传 -->
+    <input type="file" id="fileInput" style="display: none;">
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
